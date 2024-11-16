@@ -1,0 +1,106 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f0f2f5;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    text-align: center;
+    color: #1a237e;
+    margin-bottom: 30px;
+}
+
+.graph-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+#graph {
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+}
+
+.form-grid {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}
+
+.data-table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+.data-table th {
+    background-color: #1a237e;
+    color: white;
+    padding: 10px;
+}
+
+.data-table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+
+.button {
+    background-color: #1a237e;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 5px;
+}
+
+.button:hover {
+    background-color: #283593;
+}
+
+.input-field {
+    padding: 6px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 150px;
+}
+
+.select-menu {
+    padding: 6px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 150px;
+    background-color: white;
+}
+
+.form-row {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.form-label {
+    min-width: 100px;
+    text-align: right;
+}
+
+.error-message {
+    color: #d32f2f;
+    font-size: 12px;
+    margin-top: 4px;
+}

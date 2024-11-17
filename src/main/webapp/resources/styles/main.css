@@ -1,106 +1,160 @@
+/* Modern color palette */
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --accent-color: #e74c3c;
+    --background-color: #ecf0f1;
+    --text-color: #2c3e50;
+    --border-radius: 8px;
+    --shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 20px;
-    background-color: #f0f2f5;
+    background-color: var(--background-color);
+    color: var(--text-color);
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
     background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
 }
 
 .header {
     text-align: center;
-    color: #1a237e;
+    color: var(--primary-color);
     margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--background-color);
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 2.5em;
+    font-weight: 600;
 }
 
 .graph-container {
     display: flex;
     justify-content: center;
-    margin: 20px 0;
+    margin: 30px 0;
+    padding: 20px;
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
 }
 
 #graph {
-    border: 2px solid #ccc;
-    border-radius: 4px;
+    border: 2px solid var(--primary-color);
+    border-radius: var(--border-radius);
     background-color: white;
+    cursor: crosshair;
 }
 
 .form-grid {
-    margin: 20px 0;
-    padding: 15px;
+    margin: 30px 0;
+    padding: 25px;
     background-color: #f8f9fa;
-    border-radius: 4px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
 }
 
-.data-table {
-    width: 100%;
-    margin-top: 20px;
-    border-collapse: collapse;
+.form-row {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
 }
 
-.data-table th {
-    background-color: #1a237e;
-    color: white;
+.form-label {
+    min-width: 120px;
+    text-align: right;
+    font-weight: 500;
+    color: var(--primary-color);
+}
+
+.input-field, .select-menu {
     padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: var(--border-radius);
+    width: 200px;
+    font-size: 16px;
+    transition: all 0.3s ease;
 }
 
-.data-table td {
-    padding: 8px;
-    border: 1px solid #ddd;
+.input-field:focus, .select-menu:focus {
+    border-color: var(--secondary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
 }
 
 .button {
-    background-color: #1a237e;
+    background-color: var(--secondary-color);
     color: white;
-    padding: 8px 16px;
+    padding: 12px 24px;
     border: none;
-    border-radius: 4px;
+    border-radius: var(--border-radius);
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     margin: 5px;
 }
 
 .button:hover {
-    background-color: #283593;
+    background-color: #2980b9;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-.input-field {
-    padding: 6px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    width: 150px;
+.button:active {
+    transform: translateY(0);
 }
 
-.select-menu {
-    padding: 6px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    width: 150px;
+.data-table {
+    width: 100%;
+    margin-top: 30px;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.data-table th {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 15px;
+    font-weight: 500;
+    text-align: left;
+}
+
+.data-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
     background-color: white;
 }
 
-.form-row {
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+.data-table tr:last-child td {
+    border-bottom: none;
 }
 
-.form-label {
-    min-width: 100px;
-    text-align: right;
+.data-table tr:hover td {
+    background-color: #f5f6fa;
 }
 
 .error-message {
-    color: #d32f2f;
-    font-size: 12px;
-    margin-top: 4px;
+    color: var(--accent-color);
+    font-size: 14px;
+    margin-top: 5px;
+    display: block;
 }

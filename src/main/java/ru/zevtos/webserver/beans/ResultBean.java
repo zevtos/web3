@@ -1,115 +1,80 @@
 package ru.zevtos.webserver.beans;
 
 import jakarta.enterprise.context.SessionScoped;
-import jakarta.faces.application.FacesMessage;
-import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 import ru.zevtos.webserver.entities.Result;
-import ru.zevtos.webserver.services.InputService;
-import ru.zevtos.webserver.services.ResultService;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Named("resultBean")
 @SessionScoped
 public class ResultBean implements Serializable {
 
-    @Inject
-    private ResultService resultService; // Работа с базой данных
-
-    @Inject
-    private InputService inputService; // Логика валидации и проверки
     @Getter
     @Setter
-    private Result result = new Result(); // Храним объект Result
-    private List<Result> results; // Список результатов из базы данных
+    private Result result = new Result(); // Текущий объект Result
+
+    @Inject
+    private ResultListBean resultListBean; // Бин для управления списком результатов
 
     /**
      * Обработчик попадания точки.
      */
     public void checkHit() {
-        try {
-            // Валидация данных
-            inputService.validateInput(result.getX(), result.getY(), result.getR());
+        // Проверка попадания в область
+        result.setHit(checkPoint());
 
-            // Проверка попадания в область
-            result.setHit(inputService.checkPoint(result));
+        // Сохранение результата
+        saveResult();
+    }
 
-            // Сохранение результата в базу данных
-            resultService.save(result);
+    /**
+     * Сохраняет результат, добавляя его в ResultListBean.
+     */
+    private void saveResult() {
+        resultListBean.addResult(result);
+    }
 
-            // Обновляем список результатов
-            loadResults();
+    /**
+     * Проверяет, попадает ли точка в область.
+     *
+     * @return true, если точка попадает в область, иначе false.
+     */
+    private boolean checkPoint() {
+        double x = result.getX();
+        double y = result.getY();
+        double r = result.getR();
 
-            // Успешное сообщение
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Успех", "Точка успешно проверена!"));
-
-            // Сброс текущего результата
-            reset();
-
-        } catch (IllegalArgumentException e) {
-            // Обработка ошибок валидации
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ошибка валидации", e.getMessage()));
-        } catch (Exception e) {
-            // Общая обработка ошибок
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ошибка", "Произошла ошибка: " + e.getMessage()));
+        // Четверть круга в левом нижнем углу
+        if (x <= 0 && y <= 0 && (x * x + y * y <= r * r)) {
+            return true;
         }
-    }
 
-    /**
-     * Загружает результаты из базы данных.
-     */
-    public void loadResults() {
-        results = resultService.findAll();
-    }
-
-    /**
-     * Сбрасывает текущий результат.
-     */
-    public void reset() {
-        result = new Result();
-    }
-
-    /**
-     * Возвращает список результатов из базы данных.
-     */
-    public List<Result> getResults() {
-        if (results == null) {
-            loadResults();
+        // Треугольник в верхнем левом углу
+        if (x <= 0 && y >= 0 && y <= x + r) {
+            return true;
         }
-        return results;
+
+        // Прямоугольник в нижнем правом углу
+        return x >= 0 && x <= r / 2 && y >= -r && y <= 0;
     }
 
     /**
-     * Очищает список результатов.
+     * Очищает все результаты.
      */
     public void clearResults() {
-        try {
-            // Удаление всех результатов из базы данных
-            resultService.deleteAll();
-
-            // Очистка локального списка результатов
-            results = null;
-
-            // Уведомление пользователя об успешной очистке
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Успех", "Все результаты успешно удалены."));
-        } catch (Exception e) {
-            // Обработка ошибок
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ошибка", "Не удалось очистить результаты: " + e.getMessage()));
-        }
+        resultListBean.clearResults();
     }
 
+    /**
+     * Удаляет результат по идентификатору.
+     *
+     * @param id идентификатор результата для удаления.
+     */
     public void deleteResult(Long id) {
-        resultService.deleteById(id);
+        resultListBean.deleteResult(id);
     }
-
 }

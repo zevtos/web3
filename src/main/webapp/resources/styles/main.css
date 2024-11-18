@@ -158,3 +158,12 @@ body {
     margin-top: 5px;
     display: block;
 }
+
+.input-error {
+    border-color: red !important;
+}
+
+.error .select-menu,
+.error .input-field {
+    border-color: red;
+}

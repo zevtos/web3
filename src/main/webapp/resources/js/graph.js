@@ -1,117 +1,3 @@
-function validateForm() {
-    const xSelect = document.querySelector('[id$=":x"]');
-    const yInput = document.querySelector('[id$=":y"]');
-    const rSelect = document.querySelector('[id$=":r"]');
-
-    // Reset previous error states
-    clearErrors();
-
-    let isValid = true;
-
-    // Validate X
-    if (!xSelect?.value) {
-        showError(xSelect, 'X value is required');
-        isValid = false;
-    }
-
-    // Validate Y
-    if (yInput) {
-        const yValue = yInput.value.trim();
-
-        // Check if empty
-        if (!yValue) {
-            showError(yInput, 'Y value is required');
-            isValid = false;
-        }
-        // Check if it's a valid number
-        else if (!/^-?\d*\.?\d+$/.test(yValue)) {
-            showError(yInput, 'Y must be a valid number and use a dot as a decimal separator');
-            isValid = false;
-        }
-        // Check range
-        else {
-            const y = parseFloat(yValue);
-            if (y < -3 || y > 5) {
-                showError(yInput, 'Y must be between -3 and 5');
-                isValid = false;
-            }
-        }
-    }
-
-    // Validate R
-    if (!rSelect?.value) {
-        showError(rSelect, 'R value is required');
-        isValid = false;
-    }
-
-    return isValid;
-}
-
-function showError(element, message) {
-    // Add error class to parent container
-    element.parentElement?.classList.add('error');
-
-    // Create or update error message
-    let errorDiv = element.parentElement?.querySelector('.error-message');
-    if (!errorDiv) {
-        errorDiv = document.createElement('div');
-        errorDiv.className = 'error-message';
-        element.parentElement?.appendChild(errorDiv);
-    }
-    errorDiv.textContent = message;
-
-    // Highlight the input
-    element.classList.add('input-error');
-}
-
-function clearErrors() {
-    // Remove all error messages and classes
-    document.querySelectorAll('.error-message').forEach(el => el.remove());
-    document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
-    document.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
-}
-
-// Add form validation
-document.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector('form');
-
-    // Validate on submit
-    form?.addEventListener('submit', function(event) {
-        if (!validateForm()) {
-            event.preventDefault();
-            event.stopPropagation();
-            return false;
-        }
-        return true;
-    });
-
-    // Real-time validation for Y input
-    const yInput = document.querySelector('[id$=":y"]');
-    yInput?.addEventListener('input', function() {
-        validateYInput(this);
-    });
-});
-
-function validateYInput(input) {
-    const value = input.value.trim();
-
-    // Allow empty value (will be caught on submit)
-    if (!value) return;
-
-    // Check if it's a valid number
-    if (!/^-?\d*\.?\d+$/.test(value)) {
-        showError(input, 'Y must be a valid number');
-        return;
-    }
-
-    const y = parseFloat(value);
-    if (y < -3 || y > 5) {
-        showError(input, 'Y must be between -3 and 5');
-    } else {
-        clearErrors();
-    }
-}
-
 function drawGraph() {
     const canvas = document.getElementById('graph');
     if (!canvas) {
@@ -128,12 +14,9 @@ function drawGraph() {
     // Clear canvas
     ctx.clearRect(0, 0, width, height);
 
-    // Get R value with validation
-    const rSelect = document.querySelector('[id$=":r"]');
-    const R = rSelect && !isNaN(parseFloat(rSelect.value)) ? parseFloat(rSelect.value) : 2;
 
     // Adjust scale based on R value to ensure graph fits
-    const scale = Math.min(width, height) / (3 * R); // Динамический масштаб
+    const scale = Math.min(width, height) / 6;
 
     // Enhanced styling
     ctx.strokeStyle = 'rgba(44, 62, 80, 0.8)';
@@ -163,24 +46,24 @@ function drawGraph() {
 
     // Rectangle in second quadrant
     ctx.beginPath();
-    ctx.moveTo(centerX - (R/2 * scale), centerY);
+    ctx.moveTo(centerX - scale, centerY);
     ctx.lineTo(centerX, centerY);
-    ctx.lineTo(centerX, centerY - (R * scale));
-    ctx.lineTo(centerX - (R/2 * scale), centerY - (R * scale));
+    ctx.lineTo(centerX, centerY - (2 * scale));
+    ctx.lineTo(centerX - (scale), centerY - (2 * scale));
     ctx.closePath();
     ctx.fill();
 
     // Triangle in first quadrant
     ctx.beginPath();
     ctx.moveTo(centerX, centerY);
-    ctx.lineTo(centerX + (R/2 * scale), centerY);
-    ctx.lineTo(centerX, centerY - (R * scale));
+    ctx.lineTo(centerX + (scale), centerY);
+    ctx.lineTo(centerX, centerY - (2 * scale));
     ctx.closePath();
     ctx.fill();
 
     // Quarter circle in third quadrant
     ctx.beginPath();
-    ctx.arc(centerX, centerY, R/2 * scale, Math.PI/2, Math.PI, false);
+    ctx.arc(centerX, centerY, scale, Math.PI/2, Math.PI, false);
     ctx.lineTo(centerX, centerY);
     ctx.closePath();
     ctx.fill();
@@ -192,19 +75,23 @@ function drawGraph() {
     ctx.textBaseline = 'middle';
 
     // X axis labels
-    ctx.fillText('R', centerX + (R * scale), centerY + 20);
-    ctx.fillText('R/2', centerX + (R/2 * scale), centerY + 20);
-    ctx.fillText('-R/2', centerX - (R/2 * scale), centerY + 20);
-    ctx.fillText('-R', centerX - (R * scale), centerY + 20);
+    ctx.fillText('R', centerX + (2 * scale), centerY + 20);
+    ctx.fillText('R/2', centerX + (scale), centerY + 20);
+    ctx.fillText('-R/2', centerX - (scale), centerY + 20);
+    ctx.fillText('-R', centerX - (2 * scale), centerY + 20);
 
     // Y axis labels
-    ctx.fillText('R', centerX - 20, centerY - (R * scale));
-    ctx.fillText('R/2', centerX - 20, centerY - (R/2 * scale));
-    ctx.fillText('-R/2', centerX - 20, centerY + (R/2 * scale));
-    ctx.fillText('-R', centerX - 20, centerY + (R * scale));
+    ctx.fillText('R', centerX - 20, centerY - (2 * scale));
+    ctx.fillText('R/2', centerX - 20, centerY - (scale));
+    ctx.fillText('-R/2', centerX - 20, centerY + (scale));
+    ctx.fillText('-R', centerX - 20, centerY + (2 * scale));
+
+    // Get R value with validation
+    const rSelect = document.querySelector('[id$=":r"]');
+    const RSelected = rSelect && !isNaN(parseFloat(rSelect.value)) ? parseFloat(rSelect.value) : 0;
 
     // Draw all points from the table
-    drawAllPoints(ctx, centerX, centerY, scale, R);
+    drawAllPoints(ctx, centerX, centerY, scale, RSelected);
 }
 
 function drawPoint(ctx, x, y, color) {
@@ -216,7 +103,7 @@ function drawPoint(ctx, x, y, color) {
 
 function drawAllPoints(ctx, centerX, centerY, scale, currentR) {
     const table = document.querySelector('.data-table');
-    if (!table) return;
+    if (!table || !currentR) return;
 
     const rows = table.getElementsByTagName('tr');
     for (let i = 1; i < rows.length; i++) { // Skip header row
@@ -229,8 +116,8 @@ function drawAllPoints(ctx, centerX, centerY, scale, currentR) {
             const hit = cells[3].textContent.trim().toLowerCase() === 'yes';
 
             // Scale coordinates relative to current R
-            const scaledX = centerX + (x / currentR * (currentR * scale));
-            const scaledY = centerY - (y / currentR * (currentR * scale));
+            const scaledX = centerX + (x * scale);
+            const scaledY = centerY - (y * scale);
 
             drawPoint(ctx, scaledX, scaledY, hit ? '#2ecc71' : '#e74c3c');
         }

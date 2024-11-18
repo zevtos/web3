@@ -6,6 +6,7 @@
 <h:head>
     <title>Lab Work</title>
     <h:outputStylesheet name="/styles/main.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
 </h:head>
 <h:body>
     <div class="container">
@@ -14,66 +15,54 @@
         </div>
 
         <div class="graph-container">
-            <canvas id="graph" width="400" height="400">
+            <canvas id="graph" width="600" height="600">
             </canvas>
-        </div>
 
-         <h:form styleClass="form-grid" onsubmit="return validateForm();">
+            <h:form styleClass="form-grid" onsubmit="return validateForm();">
             <div class="form-row">
-                <h:outputLabel for="x" value="X coordinate:" styleClass="form-label"/>
+                <h:outputLabel for="x" value="X Coordinate:" styleClass="form-label"/>
                 <h:selectOneMenu id="x" value="#{inputBean.result.x}"
-                                 required="true" styleClass="select-menu">
+                               required="true" styleClass="select-menu">
                     <f:selectItem itemLabel="Select X" itemValue=""/>
-                    <f:selectItem itemLabel="-3" itemValue="-3"/>
-                    <f:selectItem itemLabel="-2" itemValue="-2"/>
-                    <f:selectItem itemLabel="-1" itemValue="-1"/>
-                    <f:selectItem itemLabel="0" itemValue="0"/>
-                    <f:selectItem itemLabel="1" itemValue="1"/>
-                    <f:selectItem itemLabel="2" itemValue="2"/>
-                    <f:selectItem itemLabel="3" itemValue="3"/>
-                    <f:selectItem itemLabel="4" itemValue="4"/>
-                    <f:selectItem itemLabel="5" itemValue="5"/>
+                    <f:selectItems value="#{[-3,-2,-1,0,1,2,3,4,5]}" var="val" itemLabel="#{val}" itemValue="#{val}"/>
                 </h:selectOneMenu>
             </div>
 
             <div class="form-row">
-                <h:outputLabel for="y" value="Y coordinate:" styleClass="form-label"/>
+                <h:outputLabel for="y" value="Y Coordinate:" styleClass="form-label"/>
                 <h:inputText id="y" value="#{inputBean.result.y}"
-                             required="true"
-                             styleClass="input-field">
+                           required="true"
+                           styleClass="input-field">
                     <f:validateDoubleRange minimum="-3" maximum="5"/>
                 </h:inputText>
                 <h:message for="y" styleClass="error-message"/>
             </div>
 
             <div class="form-row">
-                <h:outputLabel for="r" value="R value:" styleClass="form-label"/>
+                <h:outputLabel for="r" value="Radius (R):" styleClass="form-label"/>
                 <h:selectOneMenu id="r" value="#{inputBean.result.r}"
-                                 required="true" styleClass="select-menu"
-                                 onchange="drawGraph()">
+                               required="true" styleClass="select-menu"
+                               onchange="drawGraph()">
                     <f:selectItem itemLabel="Select R" itemValue=""/>
-                    <f:selectItem itemLabel="1" itemValue="1"/>
-                    <f:selectItem itemLabel="2" itemValue="2"/>
-                    <f:selectItem itemLabel="3" itemValue="3"/>
-                    <f:selectItem itemLabel="4" itemValue="4"/>
-                    <f:selectItem itemLabel="5" itemValue="5"/>
+                    <f:selectItems value="#{[1,2,3,4,5]}" var="val" itemLabel="#{val}" itemValue="#{val}"/>
                 </h:selectOneMenu>
             </div>
 
             <div class="form-row">
                 <h:commandButton value="Check Point"
-                                 action="#{inputBean.processInput}"
-                                 styleClass="button"/>
-                <h:commandButton value="Clear Table"
-                                 action="#{resultBean.clearResults}"
-                                 styleClass="button"/>
+                               action="#{inputBean.processInput}"
+                               styleClass="button"/>
+                <h:commandButton value="Clear History"
+                               action="#{resultBean.clearResults}"
+                               styleClass="button"/>
             </div>
         </h:form>
+        </div>
 
         <h:form>
             <h:dataTable value="#{resultListBean.results}"
-                         var="result"
-                         styleClass="data-table">
+                       var="result"
+                       styleClass="data-table">
                 <h:column>
                     <f:facet name="header">X</f:facet>
                     <h:outputText value="#{result.x}"/>
@@ -92,15 +81,17 @@
                 </h:column>
                 <h:column>
                     <f:facet name="header">Actions</f:facet>
-                    <h:commandButton value="Delete" action="#{resultBean.deleteResult(result.id)}"/>
+                    <h:commandButton value="Remove"
+                                   action="#{resultBean.deleteResult(result.id)}"
+                                   styleClass="button"/>
                 </h:column>
             </h:dataTable>
         </h:form>
 
         <h:form>
-            <h:commandButton value="Back to Index"
-                             action="#{navigationBean.toIndexPage}"
-                             styleClass="button"/>
+            <h:commandButton value="Return to Index"
+                           action="#{navigationBean.toIndexPage}"
+                           styleClass="button"/>
         </h:form>
     </div>
 

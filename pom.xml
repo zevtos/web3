@@ -4,7 +4,7 @@
 
     <groupId>ru.zevtos</groupId>
     <artifactId>web3</artifactId>
-    <version>1.0</version>
+    <version>1.4</version>
     <packaging>war</packaging>
 
     <name>web3</name>

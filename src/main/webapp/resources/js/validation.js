@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.querySelector('form');
 
     // Validate on submit
-    form?.addEventListener('submit', function(event) {
+    form?.addEventListener('submit', function (event) {
         if (!validateForm()) {
             event.preventDefault();
             event.stopPropagation();
@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Real-time validation for Y input
     const yInput = document.querySelector('[id$=":y"]');
-    yInput?.addEventListener('input', function() {
+    yInput?.addEventListener('input', function () {
         validateYInput(this);
     });
 });

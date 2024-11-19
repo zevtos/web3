@@ -43,7 +43,7 @@ public class InputBean {
         } catch (IllegalArgumentException e) {
             // Обработка ошибок валидации
             FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ошибка валидации", e.getMessage()));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ошибка валидации", e.getMessage()));
         }
     }
 }

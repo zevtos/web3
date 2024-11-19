@@ -67,7 +67,7 @@ function drawGraph() {
 
     // Quarter circle in third quadrant
     ctx.beginPath();
-    ctx.arc(centerX, centerY, scale, Math.PI/2, Math.PI, false);
+    ctx.arc(centerX, centerY, scale, Math.PI / 2, Math.PI, false);
     ctx.lineTo(centerX, centerY);
     ctx.closePath();
     ctx.fill();
@@ -176,7 +176,7 @@ try {
 }
 
 // Handle canvas clicks
-document.getElementById('graph')?.addEventListener('click', function(event) {
+document.getElementById('graph')?.addEventListener('click', function (event) {
     try {
         const canvas = event.target;
         const rect = canvas.getBoundingClientRect();
@@ -195,26 +195,26 @@ document.getElementById('graph')?.addEventListener('click', function(event) {
         const scale = Math.min(canvas.width, canvas.height) / 6;
 
         // Convert coordinates with correct scaling
-        let xCoord = ((x - centerX) / scale * (R/2));
-        let yCoord = ((centerY - y) / scale * (R/2));
+        let xCoordinate = ((x - centerX) / scale * (R / 2));
+        let yCoordinate = ((centerY - y) / scale * (R / 2));
 
         // Find closest valid X value
         const validXValues = [-3, -2, -1, 0, 1, 2, 3, 4, 5];
         const closestX = validXValues.reduce((prev, curr) => {
-            return (Math.abs(curr - xCoord) < Math.abs(prev - xCoord) ? curr : prev);
+            return (Math.abs(curr - xCoordinate) < Math.abs(prev - xCoordinate) ? curr : prev);
         });
 
         // Clamp Y value to valid range and round to 2 decimal places
-        if (yCoord > 5 || yCoord < -3) {
-            yCoord = Math.min(Math.max(yCoord, -3), 5);
-            animateBoundary(yCoord);
+        if (yCoordinate > 5 || yCoordinate < -3) {
+            yCoordinate = Math.min(Math.max(yCoordinate, -3), 5);
+            animateBoundary(yCoordinate);
         }
-        yCoord = Math.round(yCoord * 100) / 100;
+        yCoordinate = Math.round(yCoordinate * 100) / 100;
 
         // Store temporary point with correct scaling
         tempPoint = {
             x: centerX + (closestX * scale / R * 2),
-            y: centerY - (yCoord * scale / R * 2)
+            y: centerY - (yCoordinate * scale / R * 2)
         };
 
         // Update form inputs
@@ -223,7 +223,7 @@ document.getElementById('graph')?.addEventListener('click', function(event) {
 
         if (xSelect && yInput) {
             xSelect.value = closestX;
-            yInput.value = yCoord;
+            yInput.value = yCoordinate;
         }
 
         // Redraw graph with temporary point
@@ -234,7 +234,7 @@ document.getElementById('graph')?.addEventListener('click', function(event) {
 });
 
 // Clear temporary point when form is submitted
-document.querySelector('form')?.addEventListener('submit', function(event) {
+document.querySelector('form')?.addEventListener('submit', function (event) {
     if (!validateForm()) {
         event.preventDefault();
     } else {
@@ -243,7 +243,7 @@ document.querySelector('form')?.addEventListener('submit', function(event) {
 });
 
 // Redraw graph when R value changes
-document.querySelector('[id$=":r"]')?.addEventListener('change', function() {
+document.querySelector('[id$=":r"]')?.addEventListener('change', function () {
     tempPoint = null;
     drawGraph();
 });

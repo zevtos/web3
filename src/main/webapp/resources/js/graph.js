@@ -1,3 +1,8 @@
+let tempPoint = null;
+let boundaryAnimation = null;
+let boundaryOpacity = 0;
+let boundaryY = null;
+
 function drawGraph() {
     const canvas = document.getElementById('graph');
     if (!canvas) {
@@ -13,7 +18,6 @@ function drawGraph() {
 
     // Clear canvas
     ctx.clearRect(0, 0, width, height);
-
 
     // Adjust scale based on R value to ensure graph fits
     const scale = Math.min(width, height) / 6;
@@ -90,8 +94,26 @@ function drawGraph() {
     const rSelect = document.querySelector('[id$=":r"]');
     const RSelected = rSelect && !isNaN(parseFloat(rSelect.value)) ? parseFloat(rSelect.value) : 0;
 
+    // Draw boundary animation if active
+    if (boundaryOpacity > 0 && boundaryY !== null && RSelected) {
+        const scale = Math.min(canvas.width, canvas.height) / 6;
+        const yPos = centerY - (boundaryY * scale / RSelected * 2);
+
+        ctx.strokeStyle = `rgba(231, 76, 60, ${boundaryOpacity})`;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(0, yPos);
+        ctx.lineTo(width, yPos);
+        ctx.stroke();
+    }
+
     // Draw all points from the table
     drawAllPoints(ctx, centerX, centerY, scale, RSelected);
+
+    // Draw temporary point if exists
+    if (tempPoint) {
+        drawPoint(ctx, tempPoint.x, tempPoint.y, 'rgba(52, 152, 219, 0.8)');
+    }
 }
 
 function drawPoint(ctx, x, y, color) {
@@ -101,12 +123,35 @@ function drawPoint(ctx, x, y, color) {
     ctx.fill();
 }
 
+function animateBoundary(yValue) {
+    if (boundaryAnimation) {
+        cancelAnimationFrame(boundaryAnimation);
+    }
+
+    boundaryOpacity = 0.8;
+    boundaryY = yValue;
+
+    function fade() {
+        boundaryOpacity -= 0.02;
+        if (boundaryOpacity > 0) {
+            drawGraph();
+            boundaryAnimation = requestAnimationFrame(fade);
+        } else {
+            boundaryAnimation = null;
+            boundaryY = null;
+            drawGraph();
+        }
+    }
+
+    boundaryAnimation = requestAnimationFrame(fade);
+}
+
 function drawAllPoints(ctx, centerX, centerY, scale, currentR) {
     const table = document.querySelector('.data-table');
     if (!table || !currentR) return;
 
     const rows = table.getElementsByTagName('tr');
-    for (let i = 1; i < rows.length; i++) { // Skip header row
+    for (let i = 1; i < rows.length; i++) {
         const cells = rows[i].getElementsByTagName('td');
         if (cells.length >= 4) {
             const x = parseFloat(cells[0].textContent);
@@ -115,9 +160,8 @@ function drawAllPoints(ctx, centerX, centerY, scale, currentR) {
             if (r !== currentR) continue;
             const hit = cells[3].textContent.trim().toLowerCase() === 'yes';
 
-            // Scale coordinates relative to current R
-            const scaledX = centerX + (x * scale);
-            const scaledY = centerY - (y * scale);
+            const scaledX = centerX + (x * scale / currentR);
+            const scaledY = centerY - (y * scale / currentR);
 
             drawPoint(ctx, scaledX, scaledY, hit ? '#2ecc71' : '#e74c3c');
         }
@@ -148,12 +192,11 @@ document.getElementById('graph')?.addEventListener('click', function(event) {
         }
         const R = parseFloat(rSelect.value);
 
-        // Use dynamic scale
-        const scale = Math.min(canvas.width, canvas.height) / (3 * R);
+        const scale = Math.min(canvas.width, canvas.height) / 6;
 
-        // Convert coordinates (fixed to prevent doubling)
-        let xCoord = ((x - centerX) / scale) * (R / R);
-        let yCoord = ((centerY - y) / scale) * (R / R);
+        // Convert coordinates with correct scaling
+        let xCoord = ((x - centerX) / scale * (R/2));
+        let yCoord = ((centerY - y) / scale * (R/2));
 
         // Find closest valid X value
         const validXValues = [-3, -2, -1, 0, 1, 2, 3, 4, 5];
@@ -161,14 +204,18 @@ document.getElementById('graph')?.addEventListener('click', function(event) {
             return (Math.abs(curr - xCoord) < Math.abs(prev - xCoord) ? curr : prev);
         });
 
-        // Round Y to 2 decimal places
+        // Clamp Y value to valid range and round to 2 decimal places
+        if (yCoord > 5 || yCoord < -3) {
+            yCoord = Math.min(Math.max(yCoord, -3), 5);
+            animateBoundary(yCoord);
+        }
         yCoord = Math.round(yCoord * 100) / 100;
 
-        // Validate Y
-        if (yCoord < -3 || yCoord > 5) {
-            alert('Y value must be between -3 and 5');
-            return;
-        }
+        // Store temporary point with correct scaling
+        tempPoint = {
+            x: centerX + (closestX * scale / R * 2),
+            y: centerY - (yCoord * scale / R * 2)
+        };
 
         // Update form inputs
         const xSelect = document.querySelector('[id$=":x"]');
@@ -177,24 +224,26 @@ document.getElementById('graph')?.addEventListener('click', function(event) {
         if (xSelect && yInput) {
             xSelect.value = closestX;
             yInput.value = yCoord;
-
-            // Submit form
-            const submitButton = document.querySelector('[id$=":check"]');
-            if (submitButton) {
-                submitButton.click();
-            }
         }
+
+        // Redraw graph with temporary point
+        drawGraph();
     } catch (error) {
         console.error('Error handling canvas click:', error);
     }
 });
 
-// Add form validation before submit
+// Clear temporary point when form is submitted
 document.querySelector('form')?.addEventListener('submit', function(event) {
     if (!validateForm()) {
         event.preventDefault();
+    } else {
+        tempPoint = null;
     }
 });
 
 // Redraw graph when R value changes
-document.querySelector('[id$=":r"]')?.addEventListener('change', drawGraph);
+document.querySelector('[id$=":r"]')?.addEventListener('change', function() {
+    tempPoint = null;
+    drawGraph();
+});

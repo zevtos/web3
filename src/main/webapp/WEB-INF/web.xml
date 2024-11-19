@@ -12,6 +12,11 @@
         <welcome-file>index.jsf</welcome-file>
     </welcome-file-list>
 
+    <context-param>
+        <param-name>javax.faces.CONFIG_FILES</param-name>
+        <param-value>/WEB-INF/faces-config.xml</param-value>
+    </context-param>
+
     <!-- Настройки JSF -->
     <context-param>
         <param-name>jakarta.faces.DEFAULT_SUFFIX</param-name>
@@ -20,7 +25,7 @@
 
     <context-param>
         <param-name>jakarta.faces.PROJECT_STAGE</param-name>
-        <param-value>Development</param-value>
+        <param-value>Production</param-value>
     </context-param>
 
     <!-- Сервлет FacesServlet -->

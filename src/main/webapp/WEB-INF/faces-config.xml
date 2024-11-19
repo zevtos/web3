@@ -7,18 +7,20 @@
 
     <!-- Навигационные правила -->
     <navigation-rule>
-        <from-view-id>*</from-view-id>
+        <from-view-id>/*</from-view-id>
         <navigation-case>
             <from-outcome>goToMain</from-outcome>
             <to-view-id>/main.jsf</to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
 
     <navigation-rule>
-        <from-view-id>*</from-view-id>
+        <from-view-id>/*</from-view-id>
         <navigation-case>
             <from-outcome>goToIndex</from-outcome>
             <to-view-id>/index.jsf</to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
 </faces-config>

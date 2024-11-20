@@ -33,6 +33,12 @@ public class InputBean implements Serializable {
             // Валидация входных данных
             validationBean.validateInput(result);
 
+            result = Result.builder()
+                    .x(result.getX())
+                    .y(result.getY())
+                    .r(result.getR())
+                    .build();
+
             // Выполнение проверки попадания точки
             resultBean.checkHit(result);
 

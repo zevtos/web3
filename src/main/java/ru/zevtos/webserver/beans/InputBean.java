@@ -1,17 +1,19 @@
 package ru.zevtos.webserver.beans;
 
-import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 import ru.zevtos.webserver.entities.Result;
 
+import java.io.Serializable;
+
 @Named("inputBean")
-@RequestScoped
-public class InputBean {
+@ViewScoped
+public class InputBean implements Serializable {
 
     @Getter
     @Setter
@@ -31,15 +33,10 @@ public class InputBean {
             // Валидация входных данных
             validationBean.validateInput(result);
 
-            // Передача данных в ResultBean
-            resultBean.setResult(result);
-
             // Выполнение проверки попадания точки
-            resultBean.checkHit();
+            resultBean.checkHit(result);
 
-            // Сброс текущего результата в InputBean
-            result = new Result();
-
+            // Текущее состояние Result сохраняется
         } catch (IllegalArgumentException e) {
             // Обработка ошибок валидации
             FacesContext.getCurrentInstance().addMessage(null,

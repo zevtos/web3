@@ -4,7 +4,7 @@
 
     <groupId>ru.zevtos</groupId>
     <artifactId>web3</artifactId>
-    <version>1.4</version>
+    <version>1.7</version>
     <packaging>war</packaging>
 
     <name>web3</name>
@@ -59,6 +59,11 @@
             <version>4.0.4</version>
         </dependency>
 
+        <!--<dependency>
+            <groupId>org.primefaces</groupId>
+            <artifactId>primefaces</artifactId>
+            <version>14.0.7-jakarta</version>
+        </dependency>-->
     </dependencies>
 
     <build>

@@ -1,49 +1,46 @@
 package ru.zevtos.webserver.beans;
 
-import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import lombok.Getter;
-import lombok.Setter;
 import ru.zevtos.webserver.entities.Result;
 
 import java.io.Serializable;
 
 @Named("resultBean")
-@SessionScoped
+@ViewScoped
 public class ResultBean implements Serializable {
-
-    @Getter
-    @Setter
-    private Result result = new Result(); // Текущий объект Result
 
     @Inject
     private ResultListBean resultListBean; // Бин для управления списком результатов
 
     /**
      * Обработчик попадания точки.
+     * @param result объект Result, который нужно обработать.
      */
-    public void checkHit() {
+    public void checkHit(Result result) {
         // Проверка попадания в область
-        result.setHit(checkPoint());
+        result.setHit(checkPoint(result));
 
         // Сохранение результата
-        saveResult();
+        saveResult(result);
     }
 
     /**
      * Сохраняет результат, добавляя его в ResultListBean.
+     * @param result объект Result, который нужно сохранить.
      */
-    private void saveResult() {
+    private void saveResult(Result result) {
         resultListBean.addResult(result);
     }
 
     /**
      * Проверяет, попадает ли точка в область.
      *
+     * @param result объект Result с параметрами для проверки попадания.
      * @return true, если точка попадает в область, иначе false.
      */
-    private boolean checkPoint() {
+    private boolean checkPoint(Result result) {
         double x = result.getX();
         double y = result.getY();
         double r = result.getR();

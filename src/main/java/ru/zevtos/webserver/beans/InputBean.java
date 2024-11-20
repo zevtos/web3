@@ -1,8 +1,8 @@
 package ru.zevtos.webserver.beans;
 
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
-import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import ru.zevtos.webserver.entities.Result;
 import java.io.Serializable;
 
 @Named("inputBean")
-@ViewScoped
+@RequestScoped
 public class InputBean implements Serializable {
 
     @Getter
@@ -32,12 +32,6 @@ public class InputBean implements Serializable {
         try {
             // Валидация входных данных
             validationBean.validateInput(result);
-
-            result = Result.builder()
-                    .x(result.getX())
-                    .y(result.getY())
-                    .r(result.getR())
-                    .build();
 
             // Выполнение проверки попадания точки
             resultBean.checkHit(result);

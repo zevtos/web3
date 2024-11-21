@@ -14,7 +14,7 @@ public class ResultService implements Serializable {
 
     @PersistenceContext(unitName = "StudsPU")
     private EntityManager em;
-
+    
     /**
      * Сохраняет результат проверки попадания точки в область.
      *

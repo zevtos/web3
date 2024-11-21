@@ -21,7 +21,8 @@
 
         <div class="form-row">
             <h:outputLabel for="r" value="Radius (R):" styleClass="form-label"/>
-            <h:selectOneMenu id="r" value="#{inputBean.result.r}" required="true" styleClass="select-menu" onchange="drawGraph()">
+            <h:selectOneMenu id="r" value="#{inputBean.result.r}" required="true" styleClass="select-menu"
+                             onchange="drawGraph()">
                 <f:selectItem itemLabel="Select R" itemValue=""/>
                 <f:selectItems value="#{[1,2,3,4,5]}" var="val" itemLabel="#{val}" itemValue="#{val}"/>
             </h:selectOneMenu>

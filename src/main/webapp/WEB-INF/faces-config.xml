@@ -11,7 +11,7 @@
         <navigation-case>
             <from-outcome>goToMain</from-outcome>
             <to-view-id>/views/main.xhtml</to-view-id>
-            <redirect />
+            <redirect/>
         </navigation-case>
     </navigation-rule>
 
@@ -20,7 +20,7 @@
         <navigation-case>
             <from-outcome>goToIndex</from-outcome>
             <to-view-id>/views/index.xhtml</to-view-id>
-            <redirect />
+            <redirect/>
         </navigation-case>
     </navigation-rule>
 </faces-config>

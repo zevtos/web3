@@ -20,8 +20,7 @@ public class ResultListBean implements Serializable {
 
     /**
      * -- GETTER --
-     *  Возвращает список результатов из базы данных для отображения.
-     *
+     * Возвращает список результатов из базы данных для отображения.
      */
     @Getter
     private List<Result> results = new ArrayList<>(); // Локальный список для хранения результатов

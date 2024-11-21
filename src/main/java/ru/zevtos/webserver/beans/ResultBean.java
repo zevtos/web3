@@ -16,6 +16,7 @@ public class ResultBean implements Serializable {
 
     /**
      * Обработчик попадания точки.
+     *
      * @param result объект Result, который нужно обработать.
      */
     public void checkHit(Result result) {
@@ -28,6 +29,7 @@ public class ResultBean implements Serializable {
 
     /**
      * Сохраняет результат, добавляя его в ResultListBean.
+     *
      * @param result объект Result, который нужно сохранить.
      */
     private void saveResult(Result result) {
@@ -46,17 +48,17 @@ public class ResultBean implements Serializable {
         double r = result.getR();
 
         // Четверть круга в левом нижнем углу
-        if (x <= 0 && y <= 0 && (x * x + y * y <= r * r)) {
+        if (x <= 0 && y <= 0 && (x * x + y * y <= r * r / 4)) {
             return true;
         }
 
-        // Треугольник в верхнем левом углу
-        if (x <= 0 && y >= 0 && y <= x + r) {
+        // Треугольник в верхнем правом углу
+        if (x >= 0 && y >= 0 && y <= r - (x * 2)) {
             return true;
         }
 
-        // Прямоугольник в нижнем правом углу
-        return x >= 0 && x <= r / 2 && y >= -r && y <= 0;
+        // Прямоугольник в верхнем левом углу
+        return x <= 0 && x >= -(r / 2) && y <= r && y >= 0;
     }
 
     /**

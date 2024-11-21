@@ -151,28 +151,36 @@ function drawAllPoints(ctx, centerX, centerY, scale, currentR) {
     if (!table || !currentR) return;
 
     const rows = table.getElementsByTagName('tr');
+    console.log(`Found ${rows.length} rows`);
     for (let i = 1; i < rows.length; i++) {
         const cells = rows[i].getElementsByTagName('td');
+        console.log(`Row ${i} cells:`, cells);
         if (cells.length >= 4) {
             const x = parseFloat(cells[0].textContent);
             const y = parseFloat(cells[1].textContent);
             const r = parseFloat(cells[2].textContent);
+            console.log(`Parsed values - x: ${x}, y: ${y}, r: ${r}`);
+
             if (r !== currentR) continue;
+
             const hit = cells[3].textContent.trim().toLowerCase() === 'yes';
+            const scaledX = centerX + (x * scale * 2 / currentR);
+            const scaledY = centerY - (y * scale * 2 / currentR);
 
-            const scaledX = centerX + (x * scale / currentR);
-            const scaledY = centerY - (y * scale / currentR);
-
+            console.log(`Drawing point at - scaledX: ${scaledX}, scaledY: ${scaledY}, hit: ${hit}`);
             drawPoint(ctx, scaledX, scaledY, hit ? '#2ecc71' : '#e74c3c');
         }
     }
+
 }
 
 // Initial draw with error handling
-try {
-    drawGraph();
-} catch (error) {
-    console.error('Error during initial graph drawing:', error);
+window.onload = () => {
+    try {
+        drawGraph();
+    } catch (error) {
+        console.error('Error during initial graph drawing:', error);
+    }
 }
 
 // Handle canvas clicks

@@ -8,7 +8,6 @@
             <h:selectOneMenu id="x" value="#{inputBean.result.x}" required="true" styleClass="select-menu">
                 <f:selectItem itemLabel="Select X" itemValue=""/>
                 <f:selectItems value="#{[-3,-2,-1,0,1,2,3,4,5]}" var="val" itemLabel="#{val}" itemValue="#{val}"/>
-                <f:validator validatorId="validXValidation"/>
             </h:selectOneMenu>
         </div>
 
@@ -26,7 +25,6 @@
                              onchange="drawGraph()">
                 <f:selectItem itemLabel="Select R" itemValue=""/>
                 <f:selectItems value="#{[1,2,3,4,5]}" var="val" itemLabel="#{val}" itemValue="#{val}"/>
-                <f:validator validatorId="validRValidation"/>
             </h:selectOneMenu>
         </div>
 

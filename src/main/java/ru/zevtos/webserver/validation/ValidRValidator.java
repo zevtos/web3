@@ -25,12 +25,12 @@ public class ValidRValidator implements ConstraintValidator<ValidR, Double>, Val
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
         if (!(value instanceof Double doubleValue)) {
             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                "Validation Error", "Invalid input: value must be a number."));
+                    "Validation Error", "Invalid input: value must be a number."));
         }
 
         if (!validRValues.contains(doubleValue)) {
             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                "Validation Error", "Invalid input: value must be one of " + validRValues));
+                    "Validation Error", "Invalid input: value must be one of " + validRValues));
         }
     }
 }

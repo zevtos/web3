@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="WebProgrammingLab" default="build" basedir=".">
     <property file="build.properties"/>
+    <property name="music.file" location="${sound}"/>
 
     <path id="test.classpath">
         <pathelement path="${classes.dir}"/>
@@ -45,16 +46,16 @@
         <delete file="${war.dir}/${war.name}.war"/>
     </target>
 
-    <target name="compile-tests" description="Compile the test files">
+    <target name="compile-tests" depends="init" description="Compile the test files">
         <javac srcdir="${test.src.dir}" destdir="${test.classes.dir}" includeantruntime="false" source="17" target="17" encoding="UTF-8">
             <classpath>
                 <pathelement path="${classes.dir}"/>
                 <fileset dir="${lib.dir}" includes="*.jar"/>
-            </classpath> 
+            </classpath>
         </javac>
     </target>
 
-    <target name="test" depends="compile-tests,build" description="Run unit tests">
+    <target name="test" depends="build,compile-tests" description="Run unit tests">
         <junit printsummary="yes" haltonfailure="no">
             <classpath refid="test.classpath"/>
             <formatter type="xml"/>
@@ -67,8 +68,8 @@
     </target>
 
     <target name="music" description="Play music after build">
-        <exec executable="${music.player}" spawn="true">
-            <arg value="${music.sound}"/>
+        <exec dir="." executable="${music.player}" spawn="true">
+            <arg value="${music.file}"/>
         </exec>
     </target>
 

@@ -79,7 +79,7 @@
             <arg value="--porcelain"/>
         </exec>
         <condition property="should.commit">
-            <contains string="${git.status}" substring="${classes.to.watch}"/>
+            <contains string="${git.status}" substring="${class.to.watch}"/>
         </condition>
         <antcall target="commit"/>
     </target>

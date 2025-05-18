@@ -5,8 +5,6 @@ import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import lombok.Getter;
-import lombok.Setter;
 import ru.zevtos.webserver.entities.Result;
 
 import java.io.Serializable;
@@ -15,8 +13,6 @@ import java.io.Serializable;
 @RequestScoped
 public class InputBean implements Serializable {
 
-    @Getter
-    @Setter
     private Result result = new Result(); // Используем объект Result для хранения данных
 
     @Inject
@@ -24,6 +20,20 @@ public class InputBean implements Serializable {
 
     @Inject
     private ResultBean resultBean;
+
+    /**
+     * Возвращает объект Result.
+     */
+    public Result getResult() {
+        return result;
+    }
+
+    /**
+     * Устанавливает объект Result.
+     */
+    public void setResult(Result result) {
+        this.result = result;
+    }
 
     /**
      * Метод для обработки ввода пользователя.

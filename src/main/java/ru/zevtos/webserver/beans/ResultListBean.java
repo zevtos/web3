@@ -3,7 +3,6 @@ package ru.zevtos.webserver.beans;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import lombok.Getter;
 import ru.zevtos.webserver.entities.Result;
 import ru.zevtos.webserver.services.ResultService;
 
@@ -19,11 +18,16 @@ public class ResultListBean implements Serializable {
     private ResultService resultService;
 
     /**
-     * -- GETTER --
+     * Локальный список для хранения результатов.
+     */
+    private List<Result> results = new ArrayList<>();
+
+    /**
      * Возвращает список результатов из базы данных для отображения.
      */
-    @Getter
-    private List<Result> results = new ArrayList<>(); // Локальный список для хранения результатов
+    public List<Result> getResults() {
+        return results;
+    }
 
     /**
      * Добавляет новый результат и сохраняет его в базе данных.

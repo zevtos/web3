@@ -16,6 +16,7 @@ import java.util.Set;
 public class ValidRValidator implements ConstraintValidator<ValidR, Double>, Validator<Object> {
     private final Set<Double> validRValues = Set.of(1.0, 2.0, 3.0, 4.0, 5.0);
 
+
     @Override
     public boolean isValid(Double value, ConstraintValidatorContext context) {
         return value != null && validRValues.contains(value);
